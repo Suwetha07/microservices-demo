@@ -138,10 +138,10 @@ spec:
             value: "cartservice:7070"
           resources:
             requests:
-              cpu: 500m
+              cpu: 200m
               memory: 64Mi
             limits:
-              cpu: 700m
+              cpu: 300m
               memory: 128Mi
 ---
 apiVersion: v1
@@ -206,11 +206,11 @@ spec:
           value: "1"
         resources:
           requests:
-            cpu: 500m
-            memory: 220Mi
+            cpu: 100m
+            memory: 64Mi
           limits:
-            cpu: 700m
-            memory: 450Mi
+            cpu: 200m
+            memory: 128Mi
 ---
 apiVersion: v1
 kind: Service
@@ -397,10 +397,10 @@ spec:
             command: ["/bin/grpc_health_probe", "-addr=:50051"]
         resources:
           requests:
-            cpu: 500m
+            cpu: 100m
             memory: 64Mi
           limits:
-            cpu: 700m
+            cpu: 200m
             memory: 128Mi
 ---
 apiVersion: v1
@@ -517,10 +517,10 @@ spec:
           value: "redis-cart:6379"
         resources:
           requests:
-            cpu: 200m
+            cpu: 100m
             memory: 64Mi
           limits:
-            cpu: 300m
+            cpu: 200m
             memory: 128Mi
         readinessProbe:
           initialDelaySeconds: 15
@@ -609,11 +609,11 @@ spec:
           value: "10"
         resources:
           requests:
-            cpu: 300m
-            memory: 256Mi
+            cpu: 100m
+            memory: 64Mi
           limits:
-            cpu: 500m
-            memory: 512Mi
+            cpu: 200m
+            memory: 128Mi
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -847,10 +847,10 @@ spec:
         resources:
           requests:
             cpu: 100m
-            memory: 180Mi
+            memory: 64Mi
           limits:
             cpu: 200m
-            memory: 300Mi
+            memory: 128Mi
         readinessProbe:
           initialDelaySeconds: 20
           periodSeconds: 15
