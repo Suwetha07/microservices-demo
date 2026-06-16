@@ -1,17 +1,409 @@
 apiVersion: gateway.networking.k8s.io/v1
-kind: HTTPRoute
+
+kind: Gateway
+
 metadata:
-  name: frontend-route
+
+  name: http
+
+  namespace: kgateway-system
+
 spec:
+
+  gatewayClassName: kgateway
+
+  listeners:
+
+  - name: http
+
+    protocol: HTTP
+
+    port: 80
+
+    allowedRoutes:
+
+      namespaces:
+
+        from: All
+
+---
+
+# 1. Frontend Route (HTML Web App)
+
+apiVersion: gateway.networking.k8s.io/v1
+
+kind: HTTPRoute
+
+metadata:
+
+  name: frontend-route
+
+  namespace: default
+
+spec:
+
   parentRefs:
-  - name: boutique-gateway
+
+  - name: http
+
+    namespace: kgateway-system
 
   rules:
+
   - matches:
+
     - path:
+
         type: PathPrefix
+
         value: /
 
     backendRefs:
+
     - name: frontend
+
       port: 80
+
+---
+
+# 2. Cart Service Route (gRPC)
+
+apiVersion: gateway.networking.k8s.io/v1
+
+kind: HTTPRoute
+
+metadata:
+
+  name: cart-route
+
+  namespace: default
+
+spec:
+
+  parentRefs:
+
+  - name: http
+
+    namespace: kgateway-system
+
+  rules:
+
+  - matches:
+
+    - path:
+
+        type: PathPrefix
+
+        value: /hipstershop.CartService/
+
+    backendRefs:
+
+    - name: cartservice
+
+      port: 7070
+
+---
+
+# 3. Recommendation Service Route (gRPC)
+
+apiVersion: gateway.networking.k8s.io/v1
+
+kind: HTTPRoute
+
+metadata:
+
+  name: recommendation-route
+
+  namespace: default
+
+spec:
+
+  parentRefs:
+
+  - name: http
+
+    namespace: kgateway-system
+
+  rules:
+
+  - matches:
+
+    - path:
+
+        type: PathPrefix
+
+        value: /hipstershop.RecommendationService/
+
+    backendRefs:
+
+    - name: recommendationservice
+
+      port: 8080
+
+---
+
+# 4. Product Catalog Service Route (gRPC)
+
+apiVersion: gateway.networking.k8s.io/v1
+
+kind: HTTPRoute
+
+metadata:
+
+  name: productcatalog-route
+
+  namespace: default
+
+spec:
+
+  parentRefs:
+
+  - name: http
+
+    namespace: kgateway-system
+
+  rules:
+
+  - matches:
+
+    - path:
+
+        type: PathPrefix
+
+        value: /hipstershop.ProductCatalogService/
+
+    backendRefs:
+
+    - name: productcatalogservice
+
+      port: 3550
+
+---
+
+# 5. Shipping Service Route (gRPC)
+
+apiVersion: gateway.networking.k8s.io/v1
+
+kind: HTTPRoute
+
+metadata:
+
+  name: shipping-route
+
+  namespace: default
+
+spec:
+
+  parentRefs:
+
+  - name: http
+
+    namespace: kgateway-system
+
+  rules:
+
+  - matches:
+
+    - path:
+
+        type: PathPrefix
+
+        value: /hipstershop.ShippingService/
+
+    backendRefs:
+
+    - name: shippingservice
+
+      port: 50051
+
+---
+
+# 6. Currency Service Route (gRPC)
+
+apiVersion: gateway.networking.k8s.io/v1
+
+kind: HTTPRoute
+
+metadata:
+
+  name: currency-route
+
+  namespace: default
+
+spec:
+
+  parentRefs:
+
+  - name: http
+
+    namespace: kgateway-system
+
+  rules:
+
+  - matches:
+
+    - path:
+
+        type: PathPrefix
+
+        value: /hipstershop.CurrencyService/
+
+    backendRefs:
+
+    - name: currencyservice
+
+      port: 7000
+
+---
+
+# 7. Payment Service Route (gRPC)
+
+apiVersion: gateway.networking.k8s.io/v1
+
+kind: HTTPRoute
+
+metadata:
+
+  name: payment-route
+
+  namespace: default
+
+spec:
+
+  parentRefs:
+
+  - name: http
+
+    namespace: kgateway-system
+
+  rules:
+
+  - matches:
+
+    - path:
+
+        type: PathPrefix
+
+        value: /hipstershop.PaymentService/
+
+    backendRefs:
+
+    - name: paymentservice
+
+      port: 50051
+
+---
+
+# 8. Email Service Route (gRPC)
+
+apiVersion: gateway.networking.k8s.io/v1
+
+kind: HTTPRoute
+
+metadata:
+
+  name: email-route
+
+  namespace: default
+
+spec:
+
+  parentRefs:
+
+  - name: http
+
+    namespace: kgateway-system
+
+  rules:
+
+  - matches:
+
+    - path:
+
+        type: PathPrefix
+
+        value: /hipstershop.EmailService/
+
+    backendRefs:
+
+    - name: emailservice
+
+      port: 5000
+
+---
+
+# 9. Checkout Service Route (gRPC)
+
+apiVersion: gateway.networking.k8s.io/v1
+
+kind: HTTPRoute
+
+metadata:
+
+  name: checkout-route
+
+  namespace: default
+
+spec:
+
+  parentRefs:
+
+  - name: http
+
+    namespace: kgateway-system
+
+  rules:
+
+  - matches:
+
+    - path:
+
+        type: PathPrefix
+
+        value: /hipstershop.CheckoutService/
+
+    backendRefs:
+
+    - name: checkoutservice
+
+      port: 5050
+
+---
+
+# 10. Ad Service Route (gRPC)
+
+apiVersion: gateway.networking.k8s.io/v1
+
+kind: HTTPRoute
+
+metadata:
+
+  name: ad-route
+
+  namespace: default
+
+spec:
+
+  parentRefs:
+
+  - name: http
+
+    namespace: kgateway-system
+
+  rules:
+
+  - matches:
+
+    - path:
+
+        type: PathPrefix
+
+        value: /hipstershop.AdService/
+
+    backendRefs:
+
+    - name: adservice
+
+      port: 9555
+
+ 
